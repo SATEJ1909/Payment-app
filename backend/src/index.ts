@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+require('dotenv').config();
 const app = express();
 import cors from 'cors';
 import UserRouter from './routes/user';
@@ -12,7 +13,7 @@ app.use(cors());
 app.use("/api/v1/user" , UserRouter);
 app.use("/api/v1/account" , AccountRouter);
 async function main(){
-  await mongoose.connect("mongodb+srv://satejniswade:satej123@cluster0.qb1hk.mongodb.net/paytm");
+  await mongoose.connect( process.env.MONGO_URL as string );
   app.listen(3000, () => {
     console.log("Server is running on port 3000");
   });

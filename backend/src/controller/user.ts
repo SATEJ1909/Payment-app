@@ -134,36 +134,26 @@ export const updateProfile = async (req: Request, res: Response) => {
 
 export const getBulk = async (req: Request, res: Response) => {
     try {
-        const filter = req.query.filter || " ";
+        const filter = (req.query.filter as string) || "";
+
         const users = await UserModel.find({
             $or: [
-                {
-
-                    firstName: {
-                        $regex: filter,
-                    },
-
-                    lastName: {
-                        $regex: filter,
-                    }
-                }
+                { firstName: { $regex: filter, $options: "i" } },  
+                { lastName: { $regex: filter, $options: "i" } }
             ]
-        })
+        });
 
         res.json({
-            // @ts-ignore
-            user: users.map((user) => {
-                return {
-                    id: user._id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                }
-            })
-        })
+            user: users.map(user => ({
+                id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email
+            }))
+        });
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Internal server error" });
-
     }
-}
+};

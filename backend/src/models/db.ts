@@ -16,7 +16,7 @@ export { UserModel };
 
 
 const AccountSchema = new Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     balance : { type: Number, required: true }
     
 })
